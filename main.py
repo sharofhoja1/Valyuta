@@ -1,5 +1,5 @@
 import logging
-import aiohttp
+import httpx
 from aiogram import executor, types, Bot, Dispatcher
 from api import CURRENCIES, URL, text
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -20,12 +20,13 @@ async def start_command(message: types.Message):
     ])
     await message.answer(text, reply_markup=keyboard)
 
+
 async def get_currency_rates():
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(URL) as response:
-                data = await response.json()
-                return {item['Ccy']: float(item['Rate']) for item in data}
+        async with httpx.AsyncClient() as client:
+            response = await client.get(URL)
+            data = response.json()
+            return {item['Ccy']: float(item['Rate']) for item in data}
     except Exception as e:
         logging.error(f"API xatosi: {e}")
         return None
