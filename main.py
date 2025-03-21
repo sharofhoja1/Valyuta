@@ -1,7 +1,7 @@
 import logging
 import httpx
 from aiogram import types, Bot, Dispatcher
-from aiogram import executor
+from aiogram.utils import executor
 from api import CURRENCIES, URL, text
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
